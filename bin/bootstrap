@@ -3,5 +3,6 @@ set -euo pipefail
 
 (
 	cd deploy
+	pnpm install
 	pnpm cdk bootstrap
 )
