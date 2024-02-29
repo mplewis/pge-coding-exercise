@@ -33,8 +33,17 @@ const stationInfoRespSchema = z.object({
 /** The full station info response from Divvy Bikes. */
 export type StationInfoResp = z.infer<typeof stationInfoRespSchema>;
 
+export interface IDivvyBikesClient {
+	getAllStations: () => Promise<
+		{ success: true; stations: Station[] } | { success: false; error: string }
+	>;
+	getSmallStations: () => Promise<
+		{ success: true; stations: Station[] } | { success: false; error: string }
+	>;
+}
+
 /** An API client for Divvy Bikes. */
-export class DivvyBikesClient {
+export class DivvyBikesClient implements IDivvyBikesClient {
 	constructor(private stationInfoJSONURL: string) {}
 
 	/** Get all bike stations. */
