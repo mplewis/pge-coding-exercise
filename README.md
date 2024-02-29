@@ -1,48 +1,92 @@
-# PG&E - MRAD Node.js Coding Task
+# PG&E Coding Exercise
 
-## Description
-
-This project involves creating an AWS Lambda function to implement a RESTful API. The API executes the following steps for every request:
-
-1. Pull data from the provided URL: [Divvy Bikes Station Information](https://gbfs.divvybikes.com/gbfs/en/station_information.json)
-2. Make specific changes to the retrieved data.
-3. Convert the modified JSON output into CSV format.
-4. Write the CSV output into the filesystem.
-5. Upload the CSV file to an S3 bucket.
-
-## Requirements
-
-- [x] Use Hapi (node framework).
-- [x] Utilize async/await.
-- [x] Include a unit test for the API call.
-- [x] Avoid installing 3rd-party databases, caching, or other server apps.
-- [x] Optimize the app for performance, assuming it will run in a multiprocessor or multicore environment.
-- [x] Set up the app to run locally and on AWS Lambda. Ensure the Lambda can be triggered when running the project locally.
-
-## Really Nice To Have (Bonus)
-
-- [x] Implement API token authentication and handle missing tokens gracefully.
-- [x] Containerize the app using Docker for deployment.
-- [x] Provide an API gateway URL to trigger the Lambda function.
-- [ ] Add any features that make the project stand out.
-
-## Submission
-
-Please provide the source code of your project through a file or code repository. Include a README file in the project containing instructions on how to run the project and any additional details.
-
-# README
+This implements an AWS Lambda function which reads from the [Divvy Bikes Station Information](https://gbfs.divvybikes.com/gbfs/en/station_information.json) API, processes the data for all stations with < 12 capacity into a CSV, and stores it in a public S3 bucket.
 
 ## Usage
 
-- install deps
-- run tests
-- dev server
-- run in Docker
-- bootstrap CDK
-- deploy to Lambda
-- demo auth request
+### Install dependencies
+
+This project uses pnpm, so install it before installing dependencies:
+
+```bash
+npm install -g pnpm
+pnpm install
+```
+
+### Run tests
+
+This project uses Vitest to run tests ending in `.spec.ts`:
+
+```bash
+pnpm test
+```
+
+### Start the dev server
+
+The Hapi server's entrypoint is [src/serve.ts](src/serve.ts). This server is for demo purposes only and doesn't build the CSV report or upload to S3. Run this locally on port 3000 with hot reloading:
+
+```bash
+pnpm dev
+```
+
+Get the list of stations using curl:
+
+```bash
+curl -H "Authorization: Bearer dummy-token-for-testing" \
+	http://localhost:3000
+```
+
+### Run in a Docker container
+
+Use the package.json scripts to build and run the Hapi server in a Docker container:
+
+```bash
+pnpm docker-build
+pnpm docker-run
+```
+
+Send a request to the Docker container:
+
+```bash
+curl -H "Authorization: Bearer dummy-token-for-testing" \
+	http://localhost:3000
+```
+
+### Deploy the Lambda function
+
+The Lambda function's entrypoint is [src/lambda.ts](src/lambda.ts). Deployment is performed by AWS CDK and defined in [deploy/lib/deploy-stack.ts](deploy/lib/deploy-stack.ts):
+
+```bash
+bin/bootstrap  									 # only necessary before your first deploy run
+bin/deploy											 # create the infrastructure and deploy the Lambda code
+(cd deploy && pnpm cdk destroy)  # if you want to destroy the stack and its resources
+```
+
+Deploying this function will print the URL for your API Gateway endpoint:
+
+```bash
+Outputs:
+DivvyBikeStations.DivvyBikeStationsAPIEndpointCB164D8F = https://mnor5f4dxj.execute-api.us-west-2.amazonaws.com/prod/
+```
+
+You can test my demo instance of this Lambda function using curl:
+
+```bash
+curl -H "Authorization: Bearer dummy-token-for-testing" \
+	https://mnor5f4dxj.execute-api.us-west-2.amazonaws.com/prod/
+```
+
+On success, this function returns a JSON response pointing to the CSV report in the public S3 bucket:
+
+```json
+{
+	"csvReportURL": "https://divvy-bikes-stations-data-352053662162.s3.amazonaws.com/stations-1709197898.csv"
+}
+```
 
 ## Environment Variables
+
+The behavior of the server can be customized using environment variables, defined in [src/config.ts](src/config.ts):
 
 | Name                          | Type       | Description                                                     | Default                                                        |
 | ----------------------------- | ---------- | --------------------------------------------------------------- | -------------------------------------------------------------- |
