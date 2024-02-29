@@ -4,21 +4,21 @@ import { Station } from "./client";
 
 // Design a map type that maps every key in Station to a string value
 const headers: { id: keyof Station; title: string }[] = [
-	{ id: "name", title: "Name" },
-	{ id: "short_name", title: "Short name" },
-	{ id: "stationId", title: "Station ID" },
-	{ id: "externalId", title: "External ID" },
-	{ id: "station_type", title: "Station type" },
-	{ id: "lat", title: "Latitude" },
-	{ id: "lon", title: "Longitude" },
-	{ id: "capacity", title: "Capacity" },
-	{ id: "has_kiosk", title: "Has kiosk?" },
-	{ id: "eightd_has_key_dispenser", title: "Has key dispenser?" },
+	{ id: "name", title: "name" },
+	{ id: "short_name", title: "short_name" },
+	{ id: "stationId", title: "stationId" },
+	{ id: "externalId", title: "externalId" },
+	{ id: "station_type", title: "station_type" },
+	{ id: "lat", title: "lat" },
+	{ id: "lon", title: "lon" },
+	{ id: "capacity", title: "capacity" },
+	{ id: "has_kiosk", title: "has_kiosk" },
+	{ id: "eightd_has_key_dispenser", title: "eightd_has_key_dispenser" },
 	{
 		id: "electric_bike_surcharge_waiver",
-		title: "Has electric bike surcharge waiver?",
+		title: "electric_bike_surcharge_waiver",
 	},
-	{ id: "eightd_station_services", title: "Station services" },
+	{ id: "eightd_station_services", title: "eightd_station_services" },
 ];
 
 export async function stationsToCSV(

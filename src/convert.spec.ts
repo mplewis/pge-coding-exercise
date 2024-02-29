@@ -31,11 +31,11 @@ describe("stationsToCSV", () => {
 		try {
 			const contents = readFileSync(result.path, "utf8");
 			expect(contents).toMatchInlineSnapshot(`
-			"Name,Short name,Station ID,External ID,Station type,Latitude,Longitude,Capacity,Has kiosk?,Has key dispenser?,Has electric bike surcharge waiver?,Station services
-			Some Station Name,Some Short Name,SOME_STATION_ID,SOME_EXTERNAL_ID,Some Station Type,3.4,1.2,42,true,true,true,"Service 1,Service 2"
-			Some Station Name,Some Short Name,SOME_STATION_ID,SOME_EXTERNAL_ID,Some Station Type,3.4,1.2,42,true,true,true,"Service 1,Service 2"
-			"
-		`);
+				"name,short_name,stationId,externalId,station_type,lat,lon,capacity,has_kiosk,eightd_has_key_dispenser,electric_bike_surcharge_waiver,eightd_station_services
+				Some Station Name,Some Short Name,SOME_STATION_ID,SOME_EXTERNAL_ID,Some Station Type,3.4,1.2,42,true,true,true,"Service 1,Service 2"
+				Some Station Name,Some Short Name,SOME_STATION_ID,SOME_EXTERNAL_ID,Some Station Type,3.4,1.2,42,true,true,true,"Service 1,Service 2"
+				"
+			`);
 		} finally {
 			unlinkSync(result.path);
 		}
