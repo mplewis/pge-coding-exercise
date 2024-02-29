@@ -27,7 +27,7 @@ export class DeployStack extends cdk.Stack {
 				runtime: lambda.Runtime.NODEJS_20_X,
 				code: lambda.Code.fromAsset("../aws-dist"),
 				handler: "lambda.handler",
-				environment: { BUCKET_NAME: bucket.bucketName },
+				environment: { S3_BUCKET: bucket.bucketName },
 				timeout: cdk.Duration.seconds(30),
 			},
 		);
