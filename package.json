@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc -p .",
+    "clean": "rm -rf dist",
     "dev": "nodemon --watch src --ignore '**/dist/**' --ext ts --exec \"pnpm build && node\" dist/serve.js",
     "docker-build": "docker build -t pge-coding-exercise .",
     "docker-run": "docker run --init -p 3000:3000 -it pge-coding-exercise",
@@ -15,6 +16,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.134",
     "@types/node": "^20.11.22",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",

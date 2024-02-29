@@ -1,3 +1,5 @@
+/** API client for Divvy Bikes. */
+
 import { z } from "zod";
 
 /** A schema for the info for a single Divvy Bikes station. */

@@ -1,4 +1,5 @@
 .vscode/
+aws-dist/
 dist/
 node_modules/
 *.md

@@ -1,4 +1,6 @@
-import { buildServer } from "./app";
+/** Start the Hapi server. */
+
+import { buildServer } from "./hapi";
 
 (async () => {
 	const server = buildServer();

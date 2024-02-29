@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildServer } from "./app";
+import { buildServer } from "./hapi";
 import { IDivvyBikesClient } from "./client";
 
 const dummyStation = {
@@ -30,6 +30,7 @@ const fakeClient: IDivvyBikesClient = {
 describe("server", () => {
 	const server = buildServer(fakeClient);
 
+	// This integration test exercises all of the client code.
 	it("renders stations properly", async () => {
 		const res = await server.inject({ method: "GET", url: "/stations" });
 		expect(res.statusCode).toBe(200);

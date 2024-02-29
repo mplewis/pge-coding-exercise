@@ -22,8 +22,8 @@ This project involves creating an AWS Lambda function to implement a RESTful API
 ## Really Nice To Have (Bonus)
 
 - [ ] Implement API token authentication and handle missing tokens gracefully.
-- [ ] Containerize the app using Docker for deployment.
-- [ ] Provide an API gateway URL to trigger the Lambda function.
+- [x] Containerize the app using Docker for deployment.
+- [x] Provide an API gateway URL to trigger the Lambda function.
 - [ ] Add any features that make the project stand out.
 
 ## Submission
