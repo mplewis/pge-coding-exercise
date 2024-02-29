@@ -4,9 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "pnpm nodemon --exec \"node --loader ts-node/esm\" src/serve.mts",
+    "test": "pnpm vitest"
   },
   "devDependencies": {
     "nodemon": "^3.1.0",
