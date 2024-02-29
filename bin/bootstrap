@@ -1,6 +1,28 @@
 #!/bin/bash
 set -euo pipefail
 
+# Install dev deps (tsc)
+pnpm install
+
+# Build the app with tsc
+pnpm clean
+pnpm build
+
+# Minimize deps for prod
+mv node_modules node_modules_dev
+rm -rf node_modules
+pnpm install --prod
+
+# Build the bundle for Lambda
+rm -rf aws-dist
+cp -r dist aws-dist
+cp -r node_modules aws-dist
+
+# Restore dev deps
+rm -rf node_modules
+mv node_modules_dev node_modules
+
+# Bootstrap AWS CDK
 (
 	cd deploy
 	pnpm install
