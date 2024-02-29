@@ -20,8 +20,17 @@ const stationSchema = z.object({
 	lon: z.number(),
 	lat: z.number(),
 });
+/** The info for a single Divvy Bikes station, as received from the API. */
+export type RawStation = z.infer<typeof stationSchema>;
+
 /** The info for a single Divvy Bikes station. */
-export type Station = z.infer<typeof stationSchema>;
+export type Station = Omit<
+	RawStation,
+	"rental_methods" | "rental_uris" | "external_id" | "station_id"
+> & {
+	externalId: string;
+	stationId: string;
+};
 
 /** A schema for the full station info response from Divvy Bikes. */
 const stationInfoRespSchema = z.object({
@@ -33,49 +42,46 @@ const stationInfoRespSchema = z.object({
 /** The full station info response from Divvy Bikes. */
 export type StationInfoResp = z.infer<typeof stationInfoRespSchema>;
 
+/** The interface for a Divvy Bikes client. */
 export interface IDivvyBikesClient {
-	getAllStations: () => Promise<
-		{ success: true; stations: Station[] } | { success: false; error: string }
-	>;
 	getSmallStations: () => Promise<
 		{ success: true; stations: Station[] } | { success: false; error: string }
 	>;
+}
+
+/** Minimize a station's data and rewrite the IDs to use camelcase. */
+export function minimizeStation(s: RawStation): Station {
+	const { rental_methods, rental_uris, external_id, station_id, ...rest } = s;
+	return { ...rest, externalId: external_id, stationId: station_id };
 }
 
 /** An API client for Divvy Bikes. */
 export class DivvyBikesClient implements IDivvyBikesClient {
 	constructor(private stationInfoJSONURL: string) {}
 
-	/** Get all bike stations. */
-	async getAllStations(): Promise<
+	/** Get all bike stations with capacity < 12. */
+	async getSmallStations(): Promise<
 		{ success: true; stations: Station[] } | { success: false; error: string }
 	> {
 		let resp: Response;
 		try {
 			resp = await fetch(this.stationInfoJSONURL);
 		} catch (e: any) {
-			console.error(e); // TODO: improved error logging
 			return { success: false, error: e.toString() };
 		}
+
 		const data = await resp.json();
 		const result = await stationInfoRespSchema.safeParseAsync(data);
 		if (!result.success) {
-			console.error(result.error.errors); // TODO: improved error logging
 			return {
 				success: false,
 				error: result.error.errors.map((e) => e.message).join(", "),
 			};
 		}
-		return { success: true, stations: result.data.data.stations };
-	}
 
-	/** Get all bike stations with capacity < 12. */
-	async getSmallStations(): Promise<
-		{ success: true; stations: Station[] } | { success: false; error: string }
-	> {
-		const result = await this.getAllStations();
-		if (!result.success) return result;
-		const stations = result.stations.filter((s) => s.capacity < 12);
+		const stations = result.data.data.stations
+			.filter((s) => s.capacity < 12)
+			.map(minimizeStation);
 		return { success: true, stations };
 	}
 }
