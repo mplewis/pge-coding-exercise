@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildServer } from "./app.mts";
-import { IDivvyBikesClient } from "./client.mts";
+import { buildServer } from "./app";
+import { IDivvyBikesClient } from "./client";
 
 const dummyStation = {
 	rental_uris: { android: "a", ios: "i" },

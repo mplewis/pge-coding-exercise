@@ -1,5 +1,5 @@
-import Hapi from "@hapi/hapi";
-import { DivvyBikesClient, IDivvyBikesClient } from "./client.mts";
+import * as Hapi from "@hapi/hapi";
+import { DivvyBikesClient, IDivvyBikesClient } from "./client";
 
 const DIVVY_BIKE_STATIONS_API_URL =
 	"https://gbfs.divvybikes.com/gbfs/en/station_information.json";

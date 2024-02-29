@@ -2,21 +2,21 @@
   "name": "pge-coding-exercise",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "dev": "pnpm nodemon --exec \"node --loader ts-node/esm\" src/serve.mts",
-    "test": "pnpm vitest"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0",
-    "prettier": "^3.2.5",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.4",
-    "vitest": "^1.3.1"
+    "build": "tsc -p .",
+    "dev": "nodemon --watch src --ignore '**/dist/**' --ext ts --exec \"pnpm build && node\" dist/serve.js",
+    "test": "vitest"
   },
   "dependencies": {
     "@hapi/hapi": "^21.3.3",
     "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "vitest": "^1.3.1"
   }
 }
