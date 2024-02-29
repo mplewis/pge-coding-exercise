@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { stationsToCSV } from "./convert";
-import { readFileSync } from "fs";
+import { readFileSync, unlinkSync } from "fs";
 import { Station } from "./client";
 
 const dummyStation: Station = {
@@ -22,24 +22,22 @@ describe("stationsToCSV", () => {
 	it("converts a list of stations to CSV", async () => {
 		const stations = [dummyStation, dummyStation];
 
-		let called = false;
+		const result = await stationsToCSV(stations);
 
-		await stationsToCSV(stations, async (result) => {
-			called = true;
+		if (!result.success) console.error(result.error);
+		expect(result.success).toBe(true);
+		if (!result.success) return;
 
-			if (!result.success) console.error(result.error);
-			expect(result.success).toBe(true);
-			if (!result.success) return;
-
+		try {
 			const contents = readFileSync(result.path, "utf8");
 			expect(contents).toMatchInlineSnapshot(`
-				"Name,Short name,Station ID,External ID,Station type,Latitude,Longitude,Capacity,Has kiosk?,Has key dispenser?,Has electric bike surcharge waiver?,Station services
-				Some Station Name,Some Short Name,SOME_STATION_ID,SOME_EXTERNAL_ID,Some Station Type,3.4,1.2,42,true,true,true,"Service 1,Service 2"
-				Some Station Name,Some Short Name,SOME_STATION_ID,SOME_EXTERNAL_ID,Some Station Type,3.4,1.2,42,true,true,true,"Service 1,Service 2"
-				"
-			`);
-		});
-
-		expect(called).toBe(true);
+			"Name,Short name,Station ID,External ID,Station type,Latitude,Longitude,Capacity,Has kiosk?,Has key dispenser?,Has electric bike surcharge waiver?,Station services
+			Some Station Name,Some Short Name,SOME_STATION_ID,SOME_EXTERNAL_ID,Some Station Type,3.4,1.2,42,true,true,true,"Service 1,Service 2"
+			Some Station Name,Some Short Name,SOME_STATION_ID,SOME_EXTERNAL_ID,Some Station Type,3.4,1.2,42,true,true,true,"Service 1,Service 2"
+			"
+		`);
+		} finally {
+			unlinkSync(result.path);
+		}
 	});
 });

@@ -1,5 +1,4 @@
 import tmp from "tmp";
-import fs from "fs";
 import * as csvWriter from "csv-writer";
 import { Station } from "./client";
 
@@ -22,34 +21,23 @@ const headers: { id: keyof Station; title: string }[] = [
 	{ id: "eightd_station_services", title: "Station services" },
 ];
 
-type csvCallback = (
-	result: { success: true; path: string } | { success: false; error: string },
-) => Promise<void>;
-
-export async function stationsToCSV(stations: Station[], cb: csvCallback) {
-	async function writeAndCallback() {
-		try {
-			const writer = csvWriter.createObjectCsvWriter({
-				path: tempfile,
-				header: headers,
-			});
-
-			console.log(stations);
-			await writer.writeRecords(stations);
-		} catch (error: any) {
-			await cb({ success: false, error: error.toString() });
-		}
-		await cb({ success: true, path: tempfile });
-	}
-
+export async function stationsToCSV(
+	stations: Station[],
+): Promise<
+	{ success: true; path: string } | { success: false; error: string }
+> {
+	// Don't worry about cleaning up the tempfile. It will be destroyed when the lambda exits.
 	const tempfile = tmp.tmpNameSync();
+
 	try {
-		await writeAndCallback();
-	} finally {
-		try {
-			fs.unlinkSync(tempfile);
-		} catch (e) {
-			// ignore - it's already gone
-		}
+		const writer = csvWriter.createObjectCsvWriter({
+			path: tempfile,
+			header: headers,
+		});
+		await writer.writeRecords(stations);
+	} catch (error: any) {
+		return { success: false, error: error.toString() };
 	}
+
+	return { success: true, path: tempfile };
 }
