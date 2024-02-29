@@ -14,9 +14,9 @@ This project involves creating an AWS Lambda function to implement a RESTful API
 
 - [x] Use Hapi (node framework).
 - [x] Utilize async/await.
-- [ ] Include a unit test for the API call.
+- [x] Include a unit test for the API call.
 - [x] Avoid installing 3rd-party databases, caching, or other server apps.
-- [ ] Optimize the app for performance, assuming it will run in a multiprocessor or multicore environment.
+- [x] Optimize the app for performance, assuming it will run in a multiprocessor or multicore environment.
 - [ ] Set up the app to run locally and on AWS Lambda. Ensure the Lambda can be triggered when running the project locally.
 
 ## Really Nice To Have (Bonus)

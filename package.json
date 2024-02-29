@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc -p .",
     "dev": "nodemon --watch src --ignore '**/dist/**' --ext ts --exec \"pnpm build && node\" dist/serve.js",
+    "docker-build": "docker build -t pge-coding-exercise .",
+    "docker-run": "docker run --init -p 3000:3000 -it pge-coding-exercise",
     "test": "vitest"
   },
   "dependencies": {
@@ -13,6 +15,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/node": "^20.11.22",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3",

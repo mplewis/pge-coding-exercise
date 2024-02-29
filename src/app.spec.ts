@@ -19,6 +19,7 @@ const dummyStation = {
 	lat: 3.4,
 };
 
+/** A fake client to return dummy data for tests, without hitting the real API. */
 const fakeClient: IDivvyBikesClient = {
 	getSmallStations: async () => ({
 		success: true,

@@ -8,8 +8,8 @@ export const buildServer = (
 	client: IDivvyBikesClient = new DivvyBikesClient(DIVVY_BIKE_STATIONS_API_URL),
 ) => {
 	const server = Hapi.server({
-		host: "localhost",
-		port: 3000,
+		host: process.env.HOST || "localhost",
+		port: process.env.PORT || 3000,
 	});
 
 	server.route({
