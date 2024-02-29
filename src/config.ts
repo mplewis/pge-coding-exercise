@@ -8,3 +8,10 @@ export const DIVVY_BIKE_STATIONS_API_URL =
 export const HOST = process.env.HOST || "localhost";
 /** The port on which the server will listen. */
 export const PORT = process.env.PORT || 3000;
+/**
+ * Auth tokens, comma-separated, which allow access to this API via `Authentication: Bearer` header
+ * This is a basic, insecure implementation - a prod-ready impl wouldn't boot with dummy tokens.
+ */
+export const AUTH_TOKENS = (
+	process.env.AUTH_TOKENS || "dummy-token-for-testing,another-dummy-token"
+).split(",");
