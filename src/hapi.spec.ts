@@ -32,7 +32,11 @@ describe("server", () => {
 
 	// This integration test exercises all of the client code.
 	it("renders stations properly", async () => {
-		const res = await server.inject({ method: "GET", url: "/stations" });
+		const res = await server.inject({
+			method: "GET",
+			url: "/stations",
+			headers: { authorization: "Bearer dummy-token-for-testing" },
+		});
 		expect(res.statusCode).toBe(200);
 		const data = JSON.parse(res.payload);
 		expect(data.length).toBe(2);
