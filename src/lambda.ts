@@ -6,13 +6,25 @@
 import { Handler } from "aws-lambda";
 import { DivvyBikesClient } from "./client";
 import { DIVVY_BIKE_STATIONS_API_URL } from "./config";
+import { authHeaderValid } from "./auth";
 
-export const handler: Handler = async () => {
+function resp(code: number, body: object) {
+	return { statusCode: code, body: JSON.stringify(body) };
+}
+
+export const handler: Handler = async (event) => {
 	const client = new DivvyBikesClient(DIVVY_BIKE_STATIONS_API_URL);
 	const result = await client.getSmallStations();
+
+	const { valid } = authHeaderValid(event.headers?.Authorization);
+	if (!valid) {
+		return resp(401, { error: "Unauthorized" });
+	}
+
 	if (!result.success) {
 		console.error(result.error);
-		return { statusCode: 500, body: "Internal Server Error" };
+		return resp(500, { error: "Internal Server Error" });
 	}
-	return { statusCode: 200, body: JSON.stringify(result.stations) };
+
+	return resp(200, result.stations);
 };

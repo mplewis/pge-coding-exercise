@@ -1,4 +1,7 @@
-/** Hapi server code for running locally or in Docker. */
+/**
+ * Hapi server code for running locally or in Docker.
+ * This server does not upload the result to S3 – use the Lambda function for that.
+ */
 
 import * as Hapi from "@hapi/hapi";
 import * as Boom from "@hapi/boom";

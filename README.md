@@ -17,11 +17,11 @@ This project involves creating an AWS Lambda function to implement a RESTful API
 - [x] Include a unit test for the API call.
 - [x] Avoid installing 3rd-party databases, caching, or other server apps.
 - [x] Optimize the app for performance, assuming it will run in a multiprocessor or multicore environment.
-- [ ] Set up the app to run locally and on AWS Lambda. Ensure the Lambda can be triggered when running the project locally.
+- [x] Set up the app to run locally and on AWS Lambda. Ensure the Lambda can be triggered when running the project locally.
 
 ## Really Nice To Have (Bonus)
 
-- [ ] Implement API token authentication and handle missing tokens gracefully.
+- [x] Implement API token authentication and handle missing tokens gracefully.
 - [x] Containerize the app using Docker for deployment.
 - [x] Provide an API gateway URL to trigger the Lambda function.
 - [ ] Add any features that make the project stand out.
@@ -29,3 +29,24 @@ This project involves creating an AWS Lambda function to implement a RESTful API
 ## Submission
 
 Please provide the source code of your project through a file or code repository. Include a README file in the project containing instructions on how to run the project and any additional details.
+
+# README
+
+## Usage
+
+- install deps
+- run tests
+- dev server
+- run in Docker
+- bootstrap CDK
+- deploy to Lambda
+- demo auth request
+
+## Environment Variables
+
+| Name                          | Type       | Description                                                     | Default                                                        |
+| ----------------------------- | ---------- | --------------------------------------------------------------- | -------------------------------------------------------------- |
+| `DIVVY_BIKE_STATIONS_API_URL` | `string`   | The API URL for fetching information about Divvy Bike stations  | `https://gbfs.divvybikes.com/gbfs/en/station_information.json` |
+| `HOST`                        | `string`   | The host on which the server runs                               | `localhost`                                                    |
+| `PORT`                        | `number`   | The port on which the server listens                            | `3000`                                                         |
+| `AUTH_TOKENS`                 | `string[]` | The valid authentication tokens for the server, comma-separated | `dummy-token-for-testing,another-dummy-token`                  |
